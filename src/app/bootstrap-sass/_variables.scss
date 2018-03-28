@@ -1,0 +1,12 @@
+@import './navbar';
+@import './breadcrumb';
+
+
+$icon-font-path: '../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
+$body-background-color: #EEEEEE;
+
+
+body {
+  height: 100%;
+  background: $body-background-color !important;
+}
