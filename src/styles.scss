@@ -1,4 +1,5 @@
-@import 'app/bootstrap-sass/_variables';
-@import '../node_modules/bootstrap/scss/bootstrap';
+@import './bootstrap-sass/bootstrap';
+@import "../node_modules/@angular/material/theming";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 
