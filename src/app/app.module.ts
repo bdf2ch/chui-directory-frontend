@@ -11,8 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
-
-
 import { AppComponent } from './app.component';
 import { IndustryFilterComponent } from './start/industry-filter/industry-filter.component';
 import { IndustriesResource } from './shared/resources/industries-resource.service';
@@ -22,6 +20,7 @@ import { AdvertiserComponent } from './start/advertiser/advertiser.component';
 import { AdvertisersService } from './shared/services/advertisers.service';
 import { StartComponent } from './start/start.component';
 import { DirectoryComponent } from './directory/directory.component';
+import { environment } from '../environments/environment';
 
 
 const routes: Routes = [
@@ -61,7 +60,9 @@ const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
     ResourceModule.forRoot(),
-    AgmCoreModule.forRoot({apiKey: 'AIzaSyAm_0p5bEgcT0mqSXwfCKQGFf3ahkkL2Gw'}),
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsAPIKey,
+    }),
     MatExpansionModule,
     MatButtonModule,
     MatCheckboxModule,
