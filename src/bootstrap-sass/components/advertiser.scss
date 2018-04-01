@@ -1,0 +1,25 @@
+mat-card-footer {
+  padding: 10px 15px;
+  background: #ECEFF1;
+
+  .next-offer {
+    font-size: 12px;
+  }
+
+  .mat-button {
+    border: 1px solid #CFD8DC;
+    background: white;
+    .mat-button-wrapper {
+      color: #03A9F4;
+    }
+  }
+}
+
+
+.media {
+  img {
+    width: 100px;
+    height: 80px;
+    background: #ECEFF1;
+  }
+}

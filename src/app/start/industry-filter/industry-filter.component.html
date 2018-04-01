@@ -1,0 +1,38 @@
+<mat-expansion-panel [expanded]="true">
+  <mat-expansion-panel-header [collapsedHeight]="'38px'" [expandedHeight]="'50px'">
+    <mat-panel-title>
+      Filters
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <ng-template matExpansionPanelContent>
+   <div class="container-fluid">
+     <div class="row" *ngIf="!industries.isFetchingData">
+       <div class="col" *ngFor="let industry of industries.getList()">
+         <h6>{{ industry.label }}</h6>
+         <div class="container">
+           <div class="row no-gutters" *ngFor="let filter of industry.children">
+             <div class="col">
+               <mat-checkbox [(ngModel)]="filter.isEnabled">{{ filter.label }}</mat-checkbox>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+     <div class="row justify-content-center" *ngIf="industries.isFetchingData">
+       <div class="col-auto">
+         <mat-spinner [diameter]="50"></mat-spinner>
+       </div>
+     </div>
+   </div>
+  </ng-template>
+  <mat-action-row>
+    <div class="container-fluid no-padding">
+      <div class="row no-gutters">
+        <div class="col">
+          <button mat-raised-button color="primary" (click)="applyFilters()">Apply</button>
+          <button mat-button color="primary" (click)="clearFilters()">Clear</button>
+        </div>
+      </div>
+    </div>
+  </mat-action-row>
+</mat-expansion-panel>

@@ -1,25 +1,45 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { ResourceModule } from '@ngx-resource/handler-ngx-http';
+import { AgmCoreModule } from '@agm/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
 
 
 import { AppComponent } from './app.component';
-import { IndustryFilterComponent } from './industries/industry-filter/industry-filter.component';
-import { IndustryFilterItemComponent } from './industries/industry-filter/industry-filter-item/industry-filter-item.component';
+import { IndustryFilterComponent } from './start/industry-filter/industry-filter.component';
 import { IndustriesResource } from './shared/resources/industries-resource.service';
+import { IndustriesService } from './shared/services/industries.service';
+import { AdvertisersListComponent } from './start/advertisers-list/advertisers-list.component';
+import { AdvertiserComponent } from './start/advertiser/advertiser.component';
+import { AdvertisersService } from './shared/services/advertisers.service';
+import { StartComponent } from './start/start.component';
+import { DirectoryComponent } from './directory/directory.component';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: AppComponent
+    component: AppComponent,
+    children: [
+      {
+        path: '',
+        component: DirectoryComponent,
+        children: [
+          {
+            path: '',
+            component: StartComponent
+          }
+        ]
+      }
+    ]
   }
 ];
 
@@ -28,21 +48,30 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     IndustryFilterComponent,
-    IndustryFilterItemComponent
+    AdvertisersListComponent,
+    AdvertiserComponent,
+    StartComponent,
+    DirectoryComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(routes),
     ResourceModule.forRoot(),
+    AgmCoreModule.forRoot({apiKey: 'AIzaSyAm_0p5bEgcT0mqSXwfCKQGFf3ahkkL2Gw'}),
     MatExpansionModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCardModule
   ],
   providers: [
-    IndustriesResource
+    IndustriesResource,
+    IndustriesService,
+    AdvertisersService
   ],
   bootstrap: [AppComponent]
 })

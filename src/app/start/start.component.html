@@ -1,0 +1,35 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3 col-md-4">
+      <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+              <input type="text" class="form-control" name="search" placeholder="Locations" autocorrect="off" autocapitalize="off" spellcheck="off" #search [formControl]="searchControl">
+            </div>
+        </div>
+      </div>
+
+      <!-- Advertisers list -->
+      <div class="row">
+        <div class="col">
+          <app-advertisers-list [advertisers]="advertisers.getList()"></app-advertisers-list>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <app-industry-filter></app-industry-filter>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div id="app-map">
+            <agm-map [latitude]="latitude" [longitude]="longitude"></agm-map>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
