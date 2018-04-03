@@ -17,6 +17,7 @@ import { IndustriesResource } from './shared/resources/industries-resource.servi
 import { IndustriesService } from './shared/services/industries.service';
 import { AdvertisersListComponent } from './start/advertisers-list/advertisers-list.component';
 import { AdvertiserComponent } from './start/advertiser/advertiser.component';
+import { AdvertisersResource } from './shared/resources/advertisers-resource.service';
 import { AdvertisersService } from './shared/services/advertisers.service';
 import { StartComponent } from './start/start.component';
 import { DirectoryComponent } from './directory/directory.component';
@@ -72,6 +73,7 @@ const routes: Routes = [
   providers: [
     IndustriesResource,
     IndustriesService,
+    AdvertisersResource,
     AdvertisersService
   ],
   bootstrap: [AppComponent]
