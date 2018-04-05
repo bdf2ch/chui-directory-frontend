@@ -1,0 +1,73 @@
+
+<div class="step-1" *ngIf="!registrationData.secondStep">
+  <form class="custom-form" #registrationForm="ngForm">
+    <div class="row no-gutters">
+      <div class="col-12"><h6>Registration</h6></div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Mpesa number</label>
+      <input type="text" class="form-control form-control-sm" id="phone" name="phone" placeholder="Type phone" [(ngModel)]="registrationData.phone" required>
+    </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="text" class="form-control form-control-sm" id="password" name="code" placeholder="Type code" ([ngModel])="registrationData.password" required>
+      </div>
+
+    <div class="form-group">
+      <label for="password2">Repeat password</label>
+      <input type="email" class="form-control form-control-sm" id="password2" name="password2" placeholder="Repeat password" [(ngModel)]="registrationData.repeatPassword" required>
+    </div>
+    <div class="form-group form-inline terms">
+      <input type="checkbox" class="form-check" name="terms" id="terms" [(ngModel)]="registrationData.termsAccepted" required>
+      <label for="terms">&nbsp; I agree all statements in &nbsp;<a href="">terms of services</a></label>
+    </div>
+    <div class="row no-gutters form-group">
+      <div class="col-12 text-right">
+        <button type="button" class="btn btn-primary btn-sm"
+                [disabled]="registrationForm.invalid && !registrationData.termsAccepted"
+                (click)="registrationData.secondStep = true">
+          Sign Up
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="step-2" *ngIf="registrationData.secondStep">
+  <form class="custom-form" #confirmationForm="ngForm">
+    <div class="row align-content-around">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <h6>Confirm Mpesa number</h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 text-left">
+            <div class="form-group">
+              <label for="phone">Mpesa number</label>
+              <span class="phone-number" id="phone">{{ registrationData.phone }}</span>
+            </div>
+          </div>
+          <div class="col-6 text-right">
+            <a href="">Wrong number?</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label for="code">Code from SMS</label>
+              <input type="text" class="form-control form-control-sm" id="code" name="code" placeholder="Type code" ([ngModel])="registrationData.code" required>
+            </div>
+            <div class="form-group text-right">
+              <button type="button" class="btn btn-sm btn-primary" [disabled]="confirmationForm.invalid">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

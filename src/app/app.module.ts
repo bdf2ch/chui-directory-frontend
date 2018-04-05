@@ -24,7 +24,7 @@ import { AdvertisersService } from './shared/services/advertisers.service';
 import { StartComponent } from './start/start.component';
 import { DirectoryComponent } from './directory/directory.component';
 import { environment } from '../environments/environment';
-import { RegistartionDialogComponent } from './shared/components/registartion-dialog/registartion-dialog.component';
+import { RegistrationDialogComponent } from './shared/components/registration-dialog/registration-dialog.component';
 
 
 const routes: Routes = [
@@ -55,7 +55,7 @@ const routes: Routes = [
     AdvertiserComponent,
     StartComponent,
     DirectoryComponent,
-    RegistartionDialogComponent
+    RegistrationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -82,6 +82,7 @@ const routes: Routes = [
     AdvertisersResource,
     AdvertisersService
   ],
+  entryComponents: [RegistrationDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
