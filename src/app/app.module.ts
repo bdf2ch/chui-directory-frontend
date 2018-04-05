@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { AppComponent } from './app.component';
 import { IndustryFilterComponent } from './start/industry-filter/industry-filter.component';
 import { IndustriesResource } from './shared/resources/industries-resource.service';
@@ -22,6 +24,7 @@ import { AdvertisersService } from './shared/services/advertisers.service';
 import { StartComponent } from './start/start.component';
 import { DirectoryComponent } from './directory/directory.component';
 import { environment } from '../environments/environment';
+import { RegistartionDialogComponent } from './shared/components/registartion-dialog/registartion-dialog.component';
 
 
 const routes: Routes = [
@@ -51,7 +54,8 @@ const routes: Routes = [
     AdvertisersListComponent,
     AdvertiserComponent,
     StartComponent,
-    DirectoryComponent
+    DirectoryComponent,
+    RegistartionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +72,9 @@ const routes: Routes = [
     MatButtonModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule,
+    MatIconModule
   ],
   providers: [
     IndustriesResource,

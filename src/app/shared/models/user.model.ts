@@ -19,7 +19,7 @@ export class User {
     this.lastName = config ? config.lastName : '';
     this.email = config ? config.emailAddress : '';
     this.phone = config ? config.phoneNumber  : '';
-    this.password = config.password ? config.password : '';
-    this.role = config ? config.roleType : config.roleType;
+    this.password = config ? config.password : '';
+    this.role = config ? config.roleType : null;
   }
 }
