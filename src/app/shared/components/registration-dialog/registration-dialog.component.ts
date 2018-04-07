@@ -11,7 +11,7 @@ export class RegistrationDialogComponent implements OnInit {
 
   constructor(private dialog: MatDialog) {
     this.registrationData = {
-      phone: '',
+      phone: '555-666',
       password: '',
       repeatPassword: '',
       termsAccepted: false,

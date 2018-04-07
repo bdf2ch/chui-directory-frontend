@@ -16,17 +16,26 @@ export class StartComponent implements OnInit {
   public searchControl: FormControl;
   @ViewChild('search')
   public searchElementRef: ElementRef;
+  public options: any[];
 
   constructor(private zone: NgZone,
               private mapsAPI: MapsAPILoader,
               public advertisers: AdvertisersService) {
     this.zoom = 4;
     this.searchControl = new FormControl();
+    this.options = [
+      'test option #1',
+      'test option #2',
+      'test option #3',
+      'test option #4',
+      'test option #5'
+    ];
   }
 
   ngOnInit() {
     this.setCurrentPosition();
 
+    /*
     this.mapsAPI.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['address']
@@ -43,6 +52,7 @@ export class StartComponent implements OnInit {
         });
       });
     });
+    */
   }
 
 

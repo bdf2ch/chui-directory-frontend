@@ -1,0 +1,93 @@
+<div class="container-fluid">
+
+  <div class="row mb-3">
+    <div class="col-12 col-sm-12 col-md-4 col-lg-3 mb-2 mb-sm-2">
+      <mat-card class="h-100">
+        <h4>John Watts</h4>
+        <span class="customer-card-label-small">Name</span>
+      </mat-card>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-3 mb-2 mb-sm-2">
+      <mat-card class="h-100">
+        <h4>555-666</h4>
+        <span class="customer-card-label-small">
+          Active numbers (Mpesa only)
+        </span>
+      </mat-card>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-3 mb-2 mb-sm-2">
+      <mat-card class="h-100">
+        <h4>355</h4>
+        <div class="customer-card-label-small">
+          Total visits
+        </div>
+      </mat-card>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-3 mb-2 mb-sm-2">
+      <mat-card>
+        <h4>157 KES <span class="kes-remaining">out of 500 KES</span></h4>
+        <div class="customer-card-label-small mb-3">Goal before cashback can be released</div>
+        <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+      </mat-card>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-12">
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Transactions
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-panel-description>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12">
+                <mat-paginator [length]="100"
+                               [pageSize]="10"
+                               [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <mat-table #table [dataSource]="transactions">
+                  <!-- Date Column -->
+                  <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.date}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Time Column -->
+                  <ng-container matColumnDef="time">
+                    <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.time}} </mat-cell>
+                  </ng-container>
+
+                  <!-- Weight Column -->
+                  <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.amount}} KES </mat-cell>
+                  </ng-container>
+
+                  <!-- Status Column -->
+                  <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+              </div>
+            </div>
+          </div>
+        </mat-panel-description>
+      </mat-expansion-panel>
+    </div>
+  </div>
+
+
+</div>

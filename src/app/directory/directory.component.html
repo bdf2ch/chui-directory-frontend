@@ -2,9 +2,14 @@
   <a class="navbar-brand" href="#">
     Chui Directory
   </a>
+  <div class="d-flex align-self-end">
     <button mat-icon-button>
-      <mat-icon aria-label="Example icon-button with a heart icon" (click)="openRegisterDialog()">account_circle</mat-icon>
+      <mat-icon aria-label="Account" (click)="openRegisterDialog()">account_circle</mat-icon>
     </button>
+    <button mat-icon-button>
+      <mat-icon aria-label="LogIn" (click)="openAuthDialog()">vpn_key</mat-icon>
+    </button>
+  </div>
 </nav>
 
 

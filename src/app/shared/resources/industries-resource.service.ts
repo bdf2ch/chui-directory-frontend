@@ -16,7 +16,7 @@ export class IndustriesResource extends Resource {
 
   @ResourceAction({
     method: ResourceRequestMethod.Get,
-    path: '/advertiser/industry'
+    path: '/industry'
   })
   getList: IResourceMethod<void, IResponse<Industry[]>>;
 }

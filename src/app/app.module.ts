@@ -10,9 +10,13 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { AppComponent } from './app.component';
 import { IndustryFilterComponent } from './start/industry-filter/industry-filter.component';
 import { IndustriesResource } from './shared/resources/industries-resource.service';
@@ -25,6 +29,8 @@ import { StartComponent } from './start/start.component';
 import { DirectoryComponent } from './directory/directory.component';
 import { environment } from '../environments/environment';
 import { RegistrationDialogComponent } from './shared/components/registration-dialog/registration-dialog.component';
+import { AuthDialogComponent } from './shared/components/auth-dialog/auth-dialog.component';
+import { CustomerComponent } from './customer/customer.component';
 
 
 const routes: Routes = [
@@ -39,6 +45,10 @@ const routes: Routes = [
           {
             path: '',
             component: StartComponent
+          },
+          {
+            path: 'customer',
+            component: CustomerComponent
           }
         ]
       }
@@ -55,7 +65,9 @@ const routes: Routes = [
     AdvertiserComponent,
     StartComponent,
     DirectoryComponent,
-    RegistrationDialogComponent
+    RegistrationDialogComponent,
+    AuthDialogComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
@@ -72,9 +84,13 @@ const routes: Routes = [
     MatButtonModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatCardModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [
     IndustriesResource,
@@ -82,7 +98,10 @@ const routes: Routes = [
     AdvertisersResource,
     AdvertisersService
   ],
-  entryComponents: [RegistrationDialogComponent],
+  entryComponents: [
+    RegistrationDialogComponent,
+    AuthDialogComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
