@@ -3,6 +3,7 @@ import { AdvertisersService } from '../shared/services/advertisers.service';
 import { FormControl } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import {} from 'googlemaps';
+import {IGeoPoint} from "../shared/interfaces/geo-point.interface";
 
 @Component({
   selector: 'app-start',
@@ -17,10 +18,15 @@ export class StartComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef;
   public options: any[];
+  public currentMapCenter: IGeoPoint;
 
   constructor(private zone: NgZone,
               private mapsAPI: MapsAPILoader,
               public advertisers: AdvertisersService) {
+    this.currentMapCenter = {
+      latitude: 0,
+      longitude: 0
+    };
     this.zoom = 4;
     this.searchControl = new FormControl();
     this.options = [
@@ -59,11 +65,22 @@ export class StartComponent implements OnInit {
   private setCurrentPosition() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
+        this.currentMapCenter.latitude = position.coords.latitude;
+        this.currentMapCenter.longitude = position.coords.longitude;
         this.zoom = 12;
       });
     }
   }
 
+
+  onMapCenterChange(position: IGeoPoint) {
+    this.currentMapCenter = position;
+  }
+
+
+  onMapIdle() {
+    console.log('map idle');
+    console.log(this.currentMapCenter);
+    this.advertisers.fetchByGeoPoint(this.currentMapCenter, true);
+  }
 }

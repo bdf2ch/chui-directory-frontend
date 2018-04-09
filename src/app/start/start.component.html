@@ -40,7 +40,12 @@
       <div class="row">
         <div class="col">
           <div id="app-map">
-            <agm-map [latitude]="latitude" [longitude]="longitude"></agm-map>
+            <agm-map
+              [latitude]="currentMapCenter.latitude"
+              [longitude]="currentMapCenter.longitude"
+              (centerChange)="onMapCenterChange($event)"
+              (idle)="onMapIdle()">
+            </agm-map>
           </div>
         </div>
       </div>
