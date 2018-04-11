@@ -50,7 +50,7 @@ export class AdvertisersService {
     console.log('stringify point', JSON.stringify(point));
     const response: IResponse<IAdvertiser[]> = await this.advertisersResource.getByGeoPoint(
       {},
-      {query: {geopoint: JSON.stringify(point)}, includePlacesData: includePlacesData},
+      {query: {geopoint: point}, includePlacesData: includePlacesData},
       null,
       null
     );
@@ -74,7 +74,7 @@ export class AdvertisersService {
     };
     const response: IResponse<IAdvertiser[]> = await this.advertisersResource.search(
       {},
-      {query: {company: JSON.stringify(queryString)}},
+      {query: {company: queryString}},
       null,
       null
     );

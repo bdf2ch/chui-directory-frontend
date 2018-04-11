@@ -38,19 +38,20 @@ export class AdvertisersResource extends Resource {
   })
   getById: IResourceMethod<{id: string}, IResponse<IAdvertiser>>;
 
+  // TODO: Add type annotations.
 
   @ResourceAction({
     method: ResourceRequestMethod.Get,
     path: '/advertiser',
   })
-  getByGeoPoint: IResourceMethodStrict<{}, {query: {geopoint: string}, includePlacesData: boolean}, void, IResponse<IAdvertiser[]>>;
+  getByGeoPoint: IResourceMethodStrict<{}, {query: {geopoint: any}, includePlacesData: boolean}, void, IResponse<IAdvertiser[]>>;
 
 
   @ResourceAction({
     method: ResourceRequestMethod.Get,
     path: '/advertiser'
   })
-  search: IResourceMethodStrict<{}, {query: {company: string}}, void, IResponse<IAdvertiser[]>>;
+  search: IResourceMethodStrict<{}, {query: {company: any}}, void, IResponse<IAdvertiser[]>>;
 
 
   @ResourceAction({
