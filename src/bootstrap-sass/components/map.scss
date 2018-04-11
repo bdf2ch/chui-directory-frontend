@@ -1,7 +1,9 @@
 agm-map {
-  height: 500px;
+  height: 100%;
 }
 
 #app-map {
-  padding-top:  1rem;
+  position: relative;
+  //padding-top:  1rem;
+  z-index: 1;
 }
