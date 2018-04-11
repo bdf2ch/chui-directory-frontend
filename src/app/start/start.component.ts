@@ -1,9 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
 import { AdvertisersService } from '../shared/services/advertisers.service';
 import { FormControl } from '@angular/forms';
-import { MapsAPILoader } from '@agm/core';
+import { LatLngBounds, MapsAPILoader } from '@agm/core';
 import {} from 'googlemaps';
-import {IGeoPoint} from "../shared/interfaces/geo-point.interface";
+import { IGeoPoint } from '../shared/interfaces/geo-point.interface';
+import { GoogleMap, Marker, MarkerOptions } from '@agm/core/services/google-maps-types';
+import { Advertiser } from '../shared/models/advertiser.model';
 
 @Component({
   selector: 'app-start',
@@ -19,6 +21,8 @@ export class StartComponent implements OnInit {
   public searchElementRef: ElementRef;
   public options: any[];
   public currentMapCenter: IGeoPoint;
+  public currentMapBounds: LatLngBounds;
+  public markers: MarkerOptions[] = [];
 
   constructor(private zone: NgZone,
               private mapsAPI: MapsAPILoader,
@@ -40,9 +44,8 @@ export class StartComponent implements OnInit {
 
   ngOnInit() {
     this.setCurrentPosition();
-
-    /*
     this.mapsAPI.load().then(() => {
+      /**
       const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['address']
       });
@@ -57,8 +60,8 @@ export class StartComponent implements OnInit {
           this.zoom = 12;
         });
       });
+    **/
     });
-    */
   }
 
 
@@ -73,14 +76,51 @@ export class StartComponent implements OnInit {
   }
 
 
+  onSearch(query: string) {
+    if (query.length > 0) {
+      this.advertisers.search(query);
+    }
+  }
+
+
   onMapCenterChange(position: IGeoPoint) {
     this.currentMapCenter = position;
   }
 
 
   onMapIdle() {
-    console.log('map idle');
-    console.log(this.currentMapCenter);
     this.advertisers.fetchByGeoPoint(this.currentMapCenter, true);
+    const northEast = this.currentMapBounds.getNorthEast();
+    const southWest = this.currentMapBounds.getSouthWest();
+    this.markers = [];
+    this.advertisers.clear();
+
+    for (let i = 0; i < 9; i++) {
+      const marker: MarkerOptions = {
+        position: {
+          lat: Math.random() * (southWest.lat() - northEast.lat()) + northEast.lat(),
+          lng: Math.random() * (southWest.lng() - northEast.lng()) + northEast.lng(),
+        },
+        draggable: false,
+        clickable: false,
+        title: 'test marker',
+        label: i.toString()
+      };
+      this.markers.push(marker);
+
+      const adv = new Advertiser();
+      adv.title = i.toString();
+      adv.address = `${marker.position.lat} , ${marker.position.lng}`;
+      this.advertisers.add(adv);
+    }
   }
+
+
+  onMapReady(map: any) {}
+
+
+  onBoundsChange(bounds: LatLngBounds) {
+    this.currentMapBounds = bounds;
+  }
+
 }

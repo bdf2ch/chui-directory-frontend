@@ -1,0 +1,38 @@
+.wrapper {
+  position: relative;
+}
+
+#advertisers-column {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+}
+
+
+#search-and-filters {
+  position: relative;
+  z-index: 2;
+  height: 54px !important;
+}
+
+
+agm-map {
+  height: 600px;
+}
+
+
+#app-map {
+  //padding-top:  1rem;
+}
+
+
+@media (min-width: 576px){
+  #advertisers-column {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    box-sizing: border-box;
+  }
+}

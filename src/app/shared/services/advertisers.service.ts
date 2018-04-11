@@ -3,20 +3,14 @@ import { AdvertisersResource } from '../resources/advertisers-resource.service';
 import { Advertiser } from '../models/advertiser.model';
 import { IResponse } from '../models/response.model';
 import { IAdvertiser } from '../interfaces/advertiser.interface';
-import {IGeoPoint} from "../interfaces/geo-point.interface";
+import {IGeoPoint} from '../interfaces/geo-point.interface';
 
 @Injectable()
 export class AdvertisersService {
   private advertisers: Advertiser[];
 
   constructor(private advertisersResource: AdvertisersResource) {
-    this.advertisers = [
-      new Advertiser(),
-      new Advertiser(),
-      new Advertiser(),
-      new Advertiser(),
-      new Advertiser()
-    ];
+    this.advertisers = [];
   }
 
 
@@ -26,6 +20,16 @@ export class AdvertisersService {
    */
   getList(): Advertiser[] {
     return this.advertisers;
+  }
+
+
+  add(advertiser: Advertiser) {
+    this.advertisers.push(advertiser);
+  }
+
+
+  clear() {
+    this.advertisers = [];
   }
 
 

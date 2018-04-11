@@ -1,8 +1,10 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-3 col-md-4">
-      <div class="row">
-        <div class="col-12">
+<div class="container-fluid h-100 mh-100">
+  <div class="row h-100 no-gutters">
+    <div class="col-12">
+      <div class="container-fluid h-100">
+        <div id="search-and-filters" class="row">
+          <!-- START: Search -->
+          <div class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-3">
             <div class="form-group">
               <input type="text"
                      class="form-control"
@@ -13,42 +15,53 @@
                      spellcheck="off"
                      #search
                      [formControl]="searchControl"
-                     matInput [matAutocomplete]="auto">
+                     matInput
+                     [matAutocomplete]="auto"
+                     (keyup)="onSearch(search.value)"
+              >
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of options" [value]="option">
                   {{ option }}
                 </mat-option>
               </mat-autocomplete>
             </div>
-        </div>
-      </div>
+          </div>
+          <!-- END: Search -->
 
-      <!-- Advertisers list -->
-      <div class="row">
-        <div class="col">
-          <app-advertisers-list [advertisers]="advertisers.getList()"></app-advertisers-list>
+          <!-- START: Filters-->
+          <div class="col-md-7 col-lg-8 col-xl-9">
+            <app-industry-filter></app-industry-filter>
+          </div>
+          <!-- END: Filters-->
         </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="row">
-        <div class="col">
-          <app-industry-filter></app-industry-filter>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col">
-          <div id="app-map">
+        <div class="row wrapper h-100">
+          <div id="advertisers-column" class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-3">
+            <app-advertisers-list [advertisers]="advertisers.getList()"></app-advertisers-list>
+          </div>
+          <div id="app-map" class="col-md-7 col-lg-8 col-xl-9 offset-md-5 offset-lg-4 offset-xl-3">
             <agm-map
               [latitude]="currentMapCenter.latitude"
               [longitude]="currentMapCenter.longitude"
               (centerChange)="onMapCenterChange($event)"
+              (boundsChange)="onBoundsChange($event)"
+              (mapReady)="onMapReady($event)"
               (idle)="onMapIdle()">
+              <agm-marker
+                *ngFor="let marker of markers; let i = index"
+                [latitude]="marker.position.lat"
+                [longitude]="marker.position.lng"
+                [label]="marker.label"
+                [markerDraggable]="marker.draggable">
+                <agm-info-window>
+                  <strong>{{ 'marker #' +  i }}</strong><br>
+                  {{ marker.position.lat + ', ' + marker.position.lng }}
+                </agm-info-window>
+              </agm-marker>
             </agm-map>
           </div>
         </div>
       </div>
+      </div>
     </div>
   </div>
-</div>
