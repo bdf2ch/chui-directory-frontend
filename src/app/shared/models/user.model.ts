@@ -18,8 +18,6 @@ export class User {
     this.firstName = config ? config.firstName : '';
     this.lastName = config ? config.lastName : '';
     this.email = config ? config.emailAddress : '';
-    this.phone = config ? config.phoneNumber  : '';
-    this.password = config ? config.password : '';
     this.role = config ? config.roleType : null;
   }
 }

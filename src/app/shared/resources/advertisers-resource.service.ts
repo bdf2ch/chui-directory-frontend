@@ -27,9 +27,9 @@ export class AdvertisersResource extends Resource {
 
   @ResourceAction({
     method: ResourceRequestMethod.Get,
-    path: '/advertiser/industry'
+    path: '/advertiser'
   })
-  getByFilter: IResourceMethod<{query: string, page: string, limit: string}, IResponse<IAdvertiser[]>>;
+  getByFilter: IResourceMethodStrict<{}, {query: {industry: string[]}, includePlacesData: boolean}, void, IResponse<IAdvertiser[]>>;
 
 
   @ResourceAction({
@@ -51,7 +51,7 @@ export class AdvertisersResource extends Resource {
     method: ResourceRequestMethod.Get,
     path: '/advertiser'
   })
-  search: IResourceMethodStrict<{}, {query: {company: any}}, void, IResponse<IAdvertiser[]>>;
+  search: IResourceMethodStrict<{}, {query: {company: any}, includePlacesData: boolean}, void, IResponse<IAdvertiser[]>>;
 
 
   @ResourceAction({

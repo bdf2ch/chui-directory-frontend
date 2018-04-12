@@ -6,6 +6,7 @@ import {} from 'googlemaps';
 import { IGeoPoint } from '../shared/interfaces/geo-point.interface';
 import { GoogleMap, Marker, MarkerOptions } from '@agm/core/services/google-maps-types';
 import { Advertiser } from '../shared/models/advertiser.model';
+import { ILocation } from '../shared/interfaces/location.interface';
 
 @Component({
   selector: 'app-start',
@@ -20,7 +21,7 @@ export class StartComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef;
   public options: any[];
-  public currentMapCenter: IGeoPoint;
+  public currentMapCenter: ILocation;
   public currentMapBounds: LatLngBounds;
   public markers: MarkerOptions[] = [];
 
@@ -28,8 +29,8 @@ export class StartComponent implements OnInit {
               private mapsAPI: MapsAPILoader,
               public advertisers: AdvertisersService) {
     this.currentMapCenter = {
-      latitude: 0,
-      longitude: 0
+      lat: 0,
+      lng: 0
     };
     this.zoom = 4;
     this.searchControl = new FormControl();
@@ -44,33 +45,15 @@ export class StartComponent implements OnInit {
 
   ngOnInit() {
     this.setCurrentPosition();
-    this.mapsAPI.load().then(() => {
-      /**
-      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ['address']
-      });
-      autocomplete.addListener('place_changed', () => {
-        this.zone.run(() => {
-          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.zoom = 12;
-        });
-      });
-    **/
-    });
   }
 
 
   private setCurrentPosition() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.currentMapCenter.latitude = position.coords.latitude;
-        this.currentMapCenter.longitude = position.coords.longitude;
-        this.zoom = 12;
+        this.currentMapCenter.lat = position.coords.latitude;
+        this.currentMapCenter.lng = position.coords.longitude;
+        this.zoom = 8;
       });
     }
   }
@@ -78,41 +61,28 @@ export class StartComponent implements OnInit {
 
   onSearch(query: string) {
     if (query.length > 0) {
-      this.advertisers.search(query);
+      this.advertisers.search(query, true);
     }
   }
 
 
-  onMapCenterChange(position: IGeoPoint) {
-    this.currentMapCenter = position;
+  onSelectLookupOption(event: any) {
+    console.log(event.option.value);
+    this.advertisers.add(event.option.value);
+    this.advertisers.select(event.option.value);
+    this.currentMapCenter.lat = event.option.value.company.place.geometry.location.lat;
+    this.currentMapCenter.lng = event.option.value.company.place.geometry.location.lng;
+    this.zoom = 18;
+  }
+
+
+  onMapCenterChange(location: ILocation) {
+    this.currentMapCenter = location;
   }
 
 
   onMapIdle() {
-    this.advertisers.fetchByGeoPoint(this.currentMapCenter, true);
-    const northEast = this.currentMapBounds.getNorthEast();
-    const southWest = this.currentMapBounds.getSouthWest();
-    this.markers = [];
-    this.advertisers.clear();
-
-    for (let i = 0; i < 9; i++) {
-      const marker: MarkerOptions = {
-        position: {
-          lat: Math.random() * (southWest.lat() - northEast.lat()) + northEast.lat(),
-          lng: Math.random() * (southWest.lng() - northEast.lng()) + northEast.lng(),
-        },
-        draggable: false,
-        clickable: false,
-        title: 'test marker',
-        label: i.toString()
-      };
-      this.markers.push(marker);
-
-      const adv = new Advertiser();
-      adv.title = i.toString();
-      adv.address = `${marker.position.lat} , ${marker.position.lng}`;
-      this.advertisers.add(adv);
-    }
+    this.advertisers.fetchByLocation(this.currentMapCenter, 5000, true);
   }
 
 
@@ -120,7 +90,13 @@ export class StartComponent implements OnInit {
 
 
   onBoundsChange(bounds: LatLngBounds) {
+    this.advertisers.clear();
     this.currentMapBounds = bounds;
   }
 
+
+  clearFilters() {
+    this.advertisers.clear();
+    this.advertisers.fetchByLocation(this.currentMapCenter, 5000, true);
+  }
 }

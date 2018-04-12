@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, EventEmitter, Output} from "@angular/core";
 import { IndustryFilter } from '../../shared/models/industry-filter.model';
 import { IndustriesService } from '../../shared/services/industries.service';
-import {Industry} from '../../shared/models/industry.model';
+import { Industry } from '../../shared/models/industry.model';
+import { AdvertisersService } from '../../shared/services/advertisers.service';
 
 @Component({
   selector: 'app-industry-filter',
@@ -11,7 +12,12 @@ import {Industry} from '../../shared/models/industry.model';
 export class IndustryFilterComponent implements OnInit {
 
 
-  constructor(public industries: IndustriesService) {}
+  constructor(public industries: IndustriesService,
+              private advertisers: AdvertisersService) {};
+
+  @Output() clearFilters: EventEmitter<any> = new EventEmitter();
+
+
 
 
   ngOnInit() {
@@ -24,19 +30,21 @@ export class IndustryFilterComponent implements OnInit {
   /**
    * Applies selected filters
    */
-  applyFilters(): void {
-
+  apply(): void {
+    this.advertisers.clear();
+    this.advertisers.fetchByFilter(true);
   }
 
 
   /**
    * Clears all industry filters
    */
-  clearFilters(): void {
+  clear(): void {
     this.industries.getList().map((industry: Industry) => {
       industry.children.map((filter: IndustryFilter) => {
         filter.disable();
       });
     });
+    this.clearFilters.emit();
   }
 }

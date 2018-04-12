@@ -3,14 +3,23 @@ import { AdvertisersResource } from '../resources/advertisers-resource.service';
 import { Advertiser } from '../models/advertiser.model';
 import { IResponse } from '../models/response.model';
 import { IAdvertiser } from '../interfaces/advertiser.interface';
-import {IGeoPoint} from '../interfaces/geo-point.interface';
+import { ILocation } from '../interfaces/location.interface';
+import { MarkerOptions } from '@agm/core/services/google-maps-types';
+import { IndustriesService } from './industries.service';
 
 @Injectable()
 export class AdvertisersService {
   private advertisers: Advertiser[];
+  private markers: MarkerOptions[];
+  private lookupOptions: Advertiser[];
+  private selectedAdvertiser: Advertiser | null;
 
-  constructor(private advertisersResource: AdvertisersResource) {
+  constructor(private advertisersResource: AdvertisersResource,
+              private industries: IndustriesService) {
     this.advertisers = [];
+    this.markers = [];
+    this.lookupOptions = [];
+    this.selectedAdvertiser = null;
   }
 
 
@@ -20,6 +29,21 @@ export class AdvertisersService {
    */
   getList(): Advertiser[] {
     return this.advertisers;
+  }
+
+
+  getSelected(): Advertiser | null {
+    return this.selectedAdvertiser;
+  }
+
+
+  getMarkers(): MarkerOptions[] {
+    return this.markers;
+  }
+
+
+  getLookupOptions(): Advertiser[] {
+    return this.lookupOptions;
   }
 
 
@@ -33,14 +57,38 @@ export class AdvertisersService {
   }
 
 
-  async fetchByFilter(query: string, page: string, limit: string): Promise<void> {
-    const response: IResponse<IAdvertiser[]> = await this.advertisersResource.getByFilter({query: query, page: page, limit: limit});
+  select(advertiser: Advertiser | null) {
+    this.selectedAdvertiser = advertiser;
+  }
+
+
+  async fetchByFilter(includePlacesData: boolean): Promise<Advertiser[]> {
+    const response: IResponse<IAdvertiser[]> = await this.advertisersResource.getByFilter(
+      {},
+      {query: {industry: this.industries.getSelectedIndustriesIds()}, includePlacesData: includePlacesData},
+      null,
+      null
+    );
+    console.log(response);
     if (response.isSuccess) {
-      response.response.forEach((item: IAdvertiser) => {
+      response.response['list'].forEach((item: IAdvertiser) => {
         const advertiser = new Advertiser(item);
         this.advertisers.push(advertiser);
+        /*
+        this.markers.push({
+          label: '',
+          clickable: true,
+          draggable: false,
+          position: {
+            lat: advertiser.company.place.geometry.location.lat,
+            lng: advertiser.company.place.geometry.location.lng
+          },
+          icon: advertiser.company.place.icon
+        });
+        */
       });
     }
+    return this.advertisers;
   }
 
 
@@ -50,11 +98,11 @@ export class AdvertisersService {
   }
 
 
-  async fetchByGeoPoint(point: IGeoPoint, includePlacesData: boolean): Promise<Advertiser[]> {
-    console.log('stringify point', JSON.stringify(point));
+  async fetchByLocation(location: ILocation, radius: number, includePlacesData: boolean): Promise<Advertiser[]> {
+    console.log('stringify point', JSON.stringify(location));
     const response: IResponse<IAdvertiser[]> = await this.advertisersResource.getByGeoPoint(
       {},
-      {query: {geopoint: point}, includePlacesData: includePlacesData},
+      {query: {geopoint: {latitude: location.lat, longitude: location.lng, radius: radius}}, includePlacesData: includePlacesData},
       null,
       null
     );
@@ -63,22 +111,34 @@ export class AdvertisersService {
       response.response['list'].forEach((item: IAdvertiser) => {
         const advertiser = new Advertiser(item);
         this.advertisers.push(advertiser);
+        this.markers.push({
+          label: '',
+          title: advertiser.company.name,
+          clickable: true,
+          draggable: false,
+          position: {
+            lat: advertiser.company.place.geometry.location.lat,
+            lng: advertiser.company.place.geometry.location.lng
+          },
+          icon: advertiser.company.place.icon
+        });
       });
     }
     return this.advertisers;
   }
 
 
-  async search(query: string): Promise<Advertiser[]> {
+  async search(query: string, includePlacesData: boolean): Promise<Advertiser[]> {
     const queryString = {
       '$or': [
         {'name.regexp': query},
         {'location.regexp': query}
       ]
     };
+    this.lookupOptions = [];
     const response: IResponse<IAdvertiser[]> = await this.advertisersResource.search(
       {},
-      {query: {company: queryString}},
+      {query: {company: queryString}, includePlacesData: includePlacesData},
       null,
       null
     );
@@ -86,7 +146,19 @@ export class AdvertisersService {
     if (response.isSuccess) {
       response.response['list'].forEach((item: IAdvertiser) => {
         const advertiser = new Advertiser(item);
-        this.advertisers.push(advertiser);
+        //this.advertisers.push(advertiser);
+        this.lookupOptions.push(advertiser);
+        this.markers.push({
+          label: '',
+          title: advertiser.company.name,
+          clickable: true,
+          draggable: false,
+          position: {
+            lat: advertiser.company.place.geometry.location.lat,
+            lng: advertiser.company.place.geometry.location.lng
+          },
+          icon: advertiser.company.place.icon
+        });
       });
     }
     return this.advertisers;

@@ -3,6 +3,7 @@ import { IndustriesResource } from '../resources/industries-resource.service';
 import { IResponse } from '../models/response.model';
 import { Industry } from '../models/industry.model';
 import { IIndustry } from '../interfaces/industry.interface';
+import {IndustryFilter} from "../models/industry-filter.model";
 
 
 @Injectable()
@@ -44,6 +45,19 @@ export class IndustriesService {
    */
   getList(): Industry[] {
     return this.industries;
+  }
+
+
+  getSelectedIndustriesIds(): string[] {
+    const filterIds: string[] = [];
+    this.industries.forEach((industry: Industry) => {
+      industry.children.forEach((filter: IndustryFilter) => {
+        if (filter.isEnabled) {
+          filterIds.push(filter.id);
+        }
+      });
+    });
+    return filterIds;
   }
 
 }
