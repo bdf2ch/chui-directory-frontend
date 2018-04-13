@@ -3,10 +3,10 @@ import { AdvertisersService } from '../shared/services/advertisers.service';
 import { FormControl } from '@angular/forms';
 import { LatLngBounds, MapsAPILoader } from '@agm/core';
 import {} from 'googlemaps';
-import { IGeoPoint } from '../shared/interfaces/geo-point.interface';
 import { GoogleMap, Marker, MarkerOptions } from '@agm/core/services/google-maps-types';
 import { Advertiser } from '../shared/models/advertiser.model';
 import { ILocation } from '../shared/interfaces/location.interface';
+import { IViewport } from '../shared/interfaces/viewport.interface';
 
 @Component({
   selector: 'app-start',
@@ -23,7 +23,10 @@ export class StartComponent implements OnInit {
   public options: any[];
   public currentMapCenter: ILocation;
   public currentMapBounds: LatLngBounds;
+  public currentViewport: IViewport;
   public markers: MarkerOptions[] = [];
+  private placesInterval;
+  private isPlacesPending: boolean;
 
   constructor(private zone: NgZone,
               private mapsAPI: MapsAPILoader,
@@ -31,6 +34,10 @@ export class StartComponent implements OnInit {
     this.currentMapCenter = {
       lat: 0,
       lng: 0
+    };
+    this.currentViewport = {
+      northeast: {lat: 0, lng: 0},
+      southwest: {lat: 0, lng: 0}
     };
     this.zoom = 4;
     this.searchControl = new FormControl();
@@ -59,9 +66,20 @@ export class StartComponent implements OnInit {
   }
 
 
-  onSearch(query: string) {
+  async onSearch(query: string): Promise<void> {
     if (query.length > 0) {
-      this.advertisers.search(query, true);
+      if (this.placesInterval) {
+        this.placesInterval = clearTimeout(this.placesInterval);
+      }
+
+      this.placesInterval = await setTimeout( async () => {
+        if (this.isPlacesPending) {
+          return;
+        }
+        this.isPlacesPending = true;
+        this.options = await this.advertisers.search(query, true);
+        this.isPlacesPending = false;
+      }, 500);
     }
   }
 
@@ -81,22 +99,43 @@ export class StartComponent implements OnInit {
   }
 
 
+  /**
+   * Fires when map is idle
+   */
   onMapIdle() {
-    this.advertisers.fetchByLocation(this.currentMapCenter, 5000, true);
+    this.advertisers.fetchByViewport(this.currentViewport, true);
   }
 
 
   onMapReady(map: any) {}
 
 
+  /**
+   * Fires when map bounds change
+   * @param {LatLngBounds} bounds
+   */
   onBoundsChange(bounds: LatLngBounds) {
-    this.advertisers.clear();
-    this.currentMapBounds = bounds;
+    const northEast = bounds.getNorthEast();
+    const southWest = bounds.getSouthWest();
+    this.currentViewport.northeast.lat = northEast.lat();
+    this.currentViewport.northeast.lng = northEast.lng();
+    this.currentViewport.southwest.lat = southWest.lat();
+    this.currentViewport.southwest.lng = southWest.lng();
   }
 
+  /**
+   * Apply industry filters
+   */
+  applyFilters() {
+    this.advertisers.clear();
+    this.advertisers.fetchByFilter(this.currentViewport, true);
+  }
 
+  /**
+   * Clear industry filters
+   */
   clearFilters() {
     this.advertisers.clear();
-    this.advertisers.fetchByLocation(this.currentMapCenter, 5000, true);
+    this.advertisers.fetchByViewport(this.currentViewport, true);
   }
 }

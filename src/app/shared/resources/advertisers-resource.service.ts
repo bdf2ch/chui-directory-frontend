@@ -1,18 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-  Resource,
-  ResourceParams,
-  ResourceAction,
-  ResourceHandler,
-  ResourceRequestMethod,
-  IResourceMethod,
-  IResourceMethodStrict
-} from "@ngx-resource/core";
+  Resource, ResourceParams, ResourceAction, ResourceHandler, ResourceRequestMethod, IResourceMethod, IResourceMethodStrict
+} from '@ngx-resource/core';
 import { environment } from '../../../environments/environment';
 import { IResponse } from '../models/response.model';
 import { Advertiser } from '../models/advertiser.model';
 import { IAdvertiser } from '../interfaces/advertiser.interface';
-import {IGeoPoint} from "../interfaces/geo-point.interface";
+import { IViewport } from '../interfaces/viewport.interface';
 
 @Injectable()
 @ResourceParams({
@@ -29,7 +23,7 @@ export class AdvertisersResource extends Resource {
     method: ResourceRequestMethod.Get,
     path: '/advertiser'
   })
-  getByFilter: IResourceMethodStrict<{}, {query: {industry: string[]}, includePlacesData: boolean}, void, IResponse<IAdvertiser[]>>;
+  getByFilter: IResourceMethodStrict<{}, {query: {industry: string[]}, viewport: IViewport, includePlacesData: boolean}, void, IResponse<IAdvertiser[]>>;
 
 
   @ResourceAction({
@@ -44,7 +38,7 @@ export class AdvertisersResource extends Resource {
     method: ResourceRequestMethod.Get,
     path: '/advertiser',
   })
-  getByGeoPoint: IResourceMethodStrict<{}, {query: {geopoint: any}, includePlacesData: boolean}, void, IResponse<IAdvertiser[]>>;
+  getByViewport: IResourceMethodStrict<{}, {query: {viewport: IViewport}, includePlacesData: boolean}, void, IResponse<IAdvertiser[]>>;
 
 
   @ResourceAction({

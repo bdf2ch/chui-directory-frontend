@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Output} from "@angular/core";
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { IndustryFilter } from '../../shared/models/industry-filter.model';
 import { IndustriesService } from '../../shared/services/industries.service';
 import { Industry } from '../../shared/models/industry.model';
@@ -13,11 +13,10 @@ export class IndustryFilterComponent implements OnInit {
 
 
   constructor(public industries: IndustriesService,
-              private advertisers: AdvertisersService) {};
+              private advertisers: AdvertisersService) {}
 
+  @Output() applyFilters: EventEmitter<any> = new EventEmitter();
   @Output() clearFilters: EventEmitter<any> = new EventEmitter();
-
-
 
 
   ngOnInit() {
@@ -31,8 +30,7 @@ export class IndustryFilterComponent implements OnInit {
    * Applies selected filters
    */
   apply(): void {
-    this.advertisers.clear();
-    this.advertisers.fetchByFilter(true);
+    this.applyFilters.emit();
   }
 
 

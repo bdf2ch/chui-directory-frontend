@@ -1,7 +1,7 @@
-<div class="container-fluid h-100 mh-100">
+<div class="container-fluid h-100 mh-100 no-padding">
   <div class="row h-100 no-gutters">
     <div class="col-12">
-      <div class="container-fluid h-100">
+      <div class="container-fluid h-100 no-padding">
         <div id="search-and-filters" class="row">
           <!-- START: Search -->
           <div class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-3">
@@ -30,7 +30,7 @@
 
           <!-- START: Filters-->
           <div class="col-md-7 col-lg-8 col-xl-9">
-            <app-industry-filter (clearFilters)="clearFilters()"></app-industry-filter>
+            <app-industry-filter (applyFilters)="applyFilters()" (clearFilters)="clearFilters()"></app-industry-filter>
           </div>
           <!-- END: Filters-->
         </div>

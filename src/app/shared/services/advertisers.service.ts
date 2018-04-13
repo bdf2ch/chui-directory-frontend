@@ -6,6 +6,7 @@ import { IAdvertiser } from '../interfaces/advertiser.interface';
 import { ILocation } from '../interfaces/location.interface';
 import { MarkerOptions } from '@agm/core/services/google-maps-types';
 import { IndustriesService } from './industries.service';
+import {IViewport} from "../interfaces/viewport.interface";
 
 @Injectable()
 export class AdvertisersService {
@@ -62,10 +63,14 @@ export class AdvertisersService {
   }
 
 
-  async fetchByFilter(includePlacesData: boolean): Promise<Advertiser[]> {
+  async fetchByFilter(viewport: IViewport, includePlacesData: boolean): Promise<Advertiser[]> {
     const response: IResponse<IAdvertiser[]> = await this.advertisersResource.getByFilter(
       {},
-      {query: {industry: this.industries.getSelectedIndustriesIds()}, includePlacesData: includePlacesData},
+      {
+        query: {industry: this.industries.getSelectedIndustriesIds()},
+        viewport: viewport,
+        includePlacesData: includePlacesData
+      },
       null,
       null
     );
@@ -98,14 +103,12 @@ export class AdvertisersService {
   }
 
 
-  async fetchByLocation(location: ILocation, radius: number, includePlacesData: boolean): Promise<Advertiser[]> {
-    console.log('stringify point', JSON.stringify(location));
-    const response: IResponse<IAdvertiser[]> = await this.advertisersResource.getByGeoPoint(
-      {},
-      {query: {geopoint: {latitude: location.lat, longitude: location.lng, radius: radius}}, includePlacesData: includePlacesData},
-      null,
-      null
-    );
+  async fetchByViewport(viewport: IViewport, includePlacesData: boolean): Promise<Advertiser[]> {
+    const params = {
+      query: {viewport: viewport},
+      includePlacesData: includePlacesData
+    };
+    const response: IResponse<IAdvertiser[]> = await this.advertisersResource.getByViewport({}, params, null, null);
     console.log(response);
     if (response.isSuccess) {
       response.response['list'].forEach((item: IAdvertiser) => {

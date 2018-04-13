@@ -1,21 +1,47 @@
-<nav class="navbar navbar-light bg-light border-bottom">
-  <a class="navbar-brand" href="#">
-    Chui Directory
-  </a>
-  <div class="d-flex align-self-end">
-    <button mat-icon-button>
-      <mat-icon aria-label="Account" (click)="openRegisterDialog()">account_circle</mat-icon>
-    </button>
-    <button mat-icon-button>
-      <mat-icon aria-label="LogIn" (click)="openAuthDialog()">vpn_key</mat-icon>
-    </button>
+<div id="app-header">
+  <nav class="navbar navbar-light bg-light border-bottom">
+    <a class="navbar-brand" href="#">
+      Chui Directory
+    </a>
+    <div class="d-flex align-self-end">
+      <button mat-icon-button>
+        <mat-icon aria-label="Account" (click)="openRegisterDialog()">account_circle</mat-icon>
+      </button>
+      <button mat-icon-button>
+        <mat-icon aria-label="LogIn" (click)="openAuthDialog()">vpn_key</mat-icon>
+      </button>
+    </div>
+  </nav>
+
+  <div class="container-fluid no-padding">
+    <!-- Breadcrumb -->
+    <div class="row no-gutters">
+      <div class="col-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Directory</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
   </div>
-</nav>
+</div>
+
+<div id="app-content">
+  <div class="container-fluid h-100">
+    <div class="row h-100 no-gutters">
+      <div class="col-12">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
 
 
+
+<!--
 <div class="container-fluid h-100">
-
-  <!-- Breadcrumb -->
   <div class="row no-gutters">
     <div class="col-12">
       <nav aria-label="breadcrumb">
@@ -27,10 +53,10 @@
     </div>
   </div>
 
-  <div class="row h-100 no-gutters">
+  <div id="content-wrapper" class="row h-100 no-gutters">
     <div class="col-12">
       <router-outlet></router-outlet>
     </div>
   </div>
 </div>
-
+-->
